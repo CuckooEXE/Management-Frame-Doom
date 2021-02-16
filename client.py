@@ -1,5 +1,5 @@
 """
-Covert-WiFi-Comms: This project aims to provide a form of covert communications between two nodes via WiFi Management Frames
+Management Frame Doom (M.F. DOOM): This project aims to provide a form of covert communications between two nodes via WiFi Management Frames
 
 Author: Axel Persinger
 License: MIT License
@@ -71,7 +71,7 @@ def golay_decode(pkt: scapy.packet) -> list:
     """
     # First get the message itself:
     dot11elt = pkt.getlayer(scapy.layers.dot11.Dot11Elt)
-    while dot11elt and dot11elt.ID != 221: # != 0x45:
+    while dot11elt and dot11elt.ID != 0: # != 0x45:
         dot11elt = dot11elt.payload.getlayer(scapy.layers.dot11.Dot11Elt)
 
     msg = dot11elt #.?
@@ -82,9 +82,9 @@ def golay_decode(pkt: scapy.packet) -> list:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--iface', type=str, required=True, action='store', help="Interface to send/receive on")
-    parser.add_argument('--data', type=str, required=False, action='store', help="Message to send, if not provided, an interactive session starts")
-    parser.add_argument('--no-wait', required=False, action='store_true', help="Send message and don't wait for a response")
+    parser.add_argument('-i', '--iface', type=str, required=True, action='store', help="Interface to send/receive on")
+    parser.add_argument('-d', '--data', type=str, required=False, action='store', help="Message to send, if not provided, an interactive session starts")
+    parser.add_argument('-n', '--no-wait', required=False, action='store_true', help="Send message and don't wait for a response")
     args = parser.parse_args()
 
     if args.data:

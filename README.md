@@ -48,4 +48,9 @@ Refering to the image above, we can start understanding some of the information:
 
 ![Wireless Management Packet](https://mrncciew.files.wordpress.com/2014/10/cwap-probe-10.png)
 
-So looking through the various Tags we can send over in a Probe Request, I'm looking for something pretty innocuous that would allow stuff more data, and I ended up with Tag Number 0x45 "Time Advertisement"
+So looking through the various Tags we can send over in a Probe Request, I'm looking for something pretty innocuous that would allow stuff more data, and I ended up with Tag Number 0x45 "Time Advertisement".
+
+## Probe Response
+
+Probe responses come from the Access Points as they receive the Probe Requests and determine they can indeed connect. Well, what if we controlled the AP, and what if we only determine that our client can connect. 
+
