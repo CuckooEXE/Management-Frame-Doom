@@ -2,6 +2,7 @@
     <img width="33%" src="https://raw.githubusercontent.com/CuckooEXE/Management-Frame-Doom/main/imgs/management-frame-doom.png"> 
 </p>
 
+
 # Management Frame Doom
 
 This project embeds infiltration and exfiltration data in valid WiFi managemement frames. This allows an attacker in proximity to an attacker-controlled client to have bi-directional communications in a method that would be nearly impossible for defenders to pick up on.
