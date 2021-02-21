@@ -41,6 +41,7 @@ def main():
             # print('>', msg)
 
             pkt = mfdoom.gen_proberequest("Packet {}: {}".format(i, datetime.datetime.now()))
+            scapy.sendrecv.sendp(pkt)
             i+=1
 
             
