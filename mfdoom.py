@@ -67,6 +67,28 @@ def gen_proberesponse(msg: bytes, src_addr: str = "ff:ff:ff:ff:ff:ff") -> scapy.
     return pkt
 
 
+def extract_msg(pkt: scapy.packet) -> bytes:
+    """
+    Extracts an encoded, encrypted message from a Probe Request/Response packet
+
+    :param pkt: packet that contains the message
+    :type pkt: scapy.packet
+    :return: message
+    :rtype: bytes
+    """
+    # if not
+    dot11elt = pkt.getlayer(scapy.layers.dot11.Dot11Elt)
+    while dot11elt and dot11elt.ID != 0: # != 0x45:
+        dot11elt = dot11elt.payload.getlayer(scapy.layers.dot11.Dot11Elt)
+    
+    if not dot11elt: # Will be None if nothing was found, so return
+        return
+
+    # We now know that this is a Time Advertisement packet
+    # Grab the info from it, decrypt it, decode it
+    return dot11elt.info
+
+
 class Sniffer():
     """
     Defines the Sniffer class. This is mainly done so we can run the process_proberequest with things like a password for the XOR encryption
