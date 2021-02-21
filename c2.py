@@ -37,7 +37,7 @@ def main():
             scapy.sendrecv.sniff(
                 count=1,
                 iface=args.iface, 
-                lfilter=lambda pkt: (pkt.haslayer(scapy.layers.dot11.Dot11ProbeReq) and pkt.haslayer(scapy.layers.dot11.Dot11Elt) and pkt.type == 0 and pkt.subtype == 4),
+                lfilter=lambda pkt: (pkt.haslayer(scapy.layers.dot11.Dot11ProbeReq) and pkt.haslayer(scapy.layers.dot11.Dot11Elt) and pkt.type == 0 and pkt.subtype == 4 and mfdoom.extract_msg(pkt)),
                 prn=sniffer.process_proberequest,
             )
             if not args.dump:

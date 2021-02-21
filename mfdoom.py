@@ -78,7 +78,7 @@ def extract_msg(pkt: scapy.packet) -> bytes:
     """
     # if not
     dot11elt = pkt.getlayer(scapy.layers.dot11.Dot11Elt)
-    while dot11elt and dot11elt.ID != 0: # != 0x45:
+    while dot11elt and dot11elt.ID != 0x45:
         dot11elt = dot11elt.payload.getlayer(scapy.layers.dot11.Dot11Elt)
     
     if not dot11elt: # Will be None if nothing was found, so return
@@ -104,17 +104,5 @@ class Sniffer():
         :param pkt: Packet intercepted
         :type pkt: scapy.packet
         """    
-        # Iterate through the Tagged Parameters in the Probe Request until we get to the 0x45 (Time Advertisement)
-        dot11elt = pkt.getlayer(scapy.layers.dot11.Dot11Elt)
-        while dot11elt and dot11elt.ID != 0: # != 0x45:
-            dot11elt = dot11elt.payload.getlayer(scapy.layers.dot11.Dot11Elt)
-        
-        if not dot11elt: # Will be None if nothing was found, so return
-            return
-
-        # We now know that this is a Time Advertisement packet
-        # Grab the info from it, decrypt it, decode it
-        msg = dot11elt.info
-        # msg = golay.xor(msg, self.password)
-        msg = golay.decode(msg)
+        msg = extract_msg(pkt)
         print('>', msg)

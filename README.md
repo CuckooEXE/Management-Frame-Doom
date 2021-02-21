@@ -43,7 +43,7 @@ Refering to the image above, we can start understanding some of the information:
 6. Transmitter Address: This needs to be our interface's MAC if we want to receive the request. We could set this to another address if we have the interface in monitor mode, however I want to see if this project works without root.
 7. Source Address: This needs to be our interface's MAC if we want to receive the request. We could set this to another address if we have the interface in monitor mode, however I want to see if this project works without root.
 8. BSS Id: This will always be `ff:ff:ff:ff:ff:ff` for probe requests
-
+****
 **IEEE 802.11 Wireless Management:** This is where the information we want to stuff will go. This information is all decided by the client and even supports "extended" information. This handy image from MRN-CCIEW explains this section:
 
 ![Wireless Management Packet](https://mrncciew.files.wordpress.com/2014/10/cwap-probe-10.png)
@@ -54,3 +54,66 @@ So looking through the various Tags we can send over in a Probe Request, I'm loo
 
 Probe responses come from the Access Points as they receive the Probe Requests and determine they can indeed connect. Well, what if we controlled the AP, and what if we only determine that our client can connect. 
 
+
+# WarDriver
+
+`wardriver.py` is just a [wardriving](https://en.wikipedia.org/wiki/Wardriving) utility I built to collect 802.11 Probe Frame Parameters/Tags. It requires access to a MongoDB instance to add items to, to spin up a MongoDB server quickly, you can follow this guide:
+
+```bash
+# Install the MongoDB python library
+pip install pymongo
+
+# Following https://docs.mongodb.com/manual/tutorial/install-mongodb-on-debian/
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo systemctl daemon-reload
+sudo systemctl enable mongod
+sudo systemctl start mongod
+```
+
+Then you can run the script:
+
+```bash
+
+$ sudo python3 wardriver.py --iface wlan0mon --db localhost
+Session Results:
+  ID    Count
+----  -------
+   0        1
+   1        1
+   3        1
+  45        1
+  50        1
+ 127        1
+ 191        1
+ 107        1
+  59        1
+   5        1
+   7        1
+  42        1
+  48        1
+  70        1
+  61        1
+ 221        1
+All Results:
+  ID    Count
+----  -------
+  61        2
+  70        2
+  42        2
+   7        2
+  48        2
+   5        2
+ 107        3
+  59        5
+ 221        7
+ 191       10
+ 127       16
+   3       16
+  45       20
+  50       23
+   1       23
+   0       23
+```
